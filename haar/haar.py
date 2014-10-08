@@ -12,7 +12,7 @@ import operator
 import Tkinter as Tk
 
 
-n = 10;
+n = 4;
 N = 2**n;
 epsilon = 0.6;
 print("N:{}".format(N));
@@ -20,8 +20,9 @@ print("N:{}".format(N));
 #0 Extraction des données tel qu'image
 random.seed(1)
 #data = [random.uniform(0,10) for i in range(N)]
-#data = range(1,N+1)
-data = [math.sin(i) for i in np.linspace(0,np.pi*4,N)]
+data = range(1,N+1)
+data = [float(d) for d in data]
+#data = [math.sin(i) for i in np.linspace(0,np.pi*4,N)]
 
 
 
@@ -74,29 +75,40 @@ def reconstruction(moyennes,coeffs,OpAdd=None,OpSous=None):
 
 
 #2.Toutes les etapes de décomposition
-def allDecomposition(data,OpMoyenne=None,OpCoeff=None):
+def allDecomposition(data,OpMoyenne=None,OpCoeff=None,verbose=False):
+	if verbose :
+		print("Decomposition:")
 	moyennes = data
 	coeffs = []
+	if verbose : 
+		print("{} || {}".format(moyennes,coeffs))
 	while len(moyennes)>1 :
 		#print(moyennes,coeffs)
 		moyennes,coeffs2 = decomposition(moyennes,OpMoyenne=OpMoyenne,OpCoeff=OpCoeff)
 		coeffs = coeffs2+coeffs;
+		if verbose :
+			print("{} || {}".format(moyennes,coeffs))
 	return moyennes[0],coeffs
 #res =  allDecomposition(data)
 #print(res)
 #2.Toutes les étapes de reconstruction
-def allReconstruction(moyenne,coeffs,OpAdd=None,OpSous=None):
-	localCoeffs = coeffs;
+def allReconstruction(moyenne,coeffs,OpAdd=None,OpSous=None,verbose=False):
+	if verbose :
+		print "Reconstruction:"
+	localCoeffs = list(coeffs);
 	data = [moyenne]
+	if verbose:
+		print("{} || {}".format(data,localCoeffs))
 	while len(localCoeffs)>1:
 		data = reconstruction(data,localCoeffs[:len(data)],OpAdd=OpAdd,OpSous=OpSous)
 		del localCoeffs[:len(data)//2]
+		if verbose :
+			print("{} || {}".format(data,localCoeffs))
 	return data
-#a,b = allDecomposition(data)
-#print(a,b)
-#print("-----------")
-#res = allReconstruction(a,b)
-#print(res)
+m,c = allDecomposition(data,verbose=True)
+print("-----------")
+res = allReconstruction(m,c,verbose=True)
+
 
 #3.Mettre à 0 les coeff de details d si |d| = epsilon
 def cleanCoeff(coeffs,epsilon,defValue=0,OpInf=None):
@@ -110,14 +122,18 @@ def cleanCoeff(coeffs,epsilon,defValue=0,OpInf=None):
 	else :
 		return [defValue if fabs(c)<epsilon else c for c in coeffs]
 	
-m, c = allDecomposition(data)
-newC =  cleanCoeff(c,0.01)
+# m, c = allDecomposition(data)
+myeps = 1
+newC =  cleanCoeff(c,myeps)
+print("epsilon = {}".format(myeps))
+print("coeffs = {}".format(c))
+print("newCoeffs = {}".format(newC))
 
 
 #4.Reconstruire avec les nouveaux coefficients de details => 
 #on trouve des approximations des données d'origine
 
-newData = allReconstruction(m,newC)
+newData = allReconstruction(m,newC,verbose=True)
 P.plot(range(0,len(newData)),newData, marker='o', color='r', ls='')
 P.show()
 # print("NewData: {}".format(newData))
@@ -158,15 +174,15 @@ def errorGraphique(data,nEpsilon,errorFunction):
 	
 	P.plot(epsilonRange,erreur)
 	P.show()
-# errorGraphique(data,20,comparaison2);
+errorGraphique(data,20,comparaison2);
 
 
 #7 Histogramme des valeurs absolus des coefficients de details
 def coeffHistogramme(coeffs,nGroup):
 	P.hist(coeffs, bins=nGroup)
 	P.show()
-# m,c = allDecomposition(data)
-# coeffHistogramme(c,25)
+c = [fabs(el) for el in c]
+coeffHistogramme(c,100)
 
 
 ## Récupération des valeurs de l'image
@@ -213,14 +229,14 @@ opInfPixel = lambda data,epsilon: (fabs(data[0])<epsilon or fabs(data[1])<epsilo
 
 
 ## Tkinter
-root = Tk.Tk() 
-root.geometry("300x300+300+300")
+# root = Tk.Tk() 
+# root.geometry("300x300+300+300")
  
-image = Image.open("python_64.jpg") 
-photo = ImageTk.PhotoImage(image) 
+# image = Image.open("python_64.jpg") 
+# photo = ImageTk.PhotoImage(image) 
  
-label = Tk.Label(image=photo)
-label.image = photo 
-label.place(x=0,y=0)
-# label.pack() 
-root.mainloop()
+# label = Tk.Label(image=photo)
+# label.image = photo 
+# label.place(x=0,y=0)
+ 
+# root.mainloop()
