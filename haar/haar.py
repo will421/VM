@@ -12,19 +12,18 @@ import operator
 import Tkinter as Tk
 
 
-n = 4;
+n = 10;
 N = 2**n;
 epsilon = 0.6;
 print("N:{}".format(N));
 
 #0 Extraction des données tel qu'image
 random.seed(1)
-#data = [random.uniform(0,10) for i in range(N)]
-data = range(1,N+1)
-data = [float(d) for d in data]
-#data = [math.sin(i) for i in np.linspace(0,np.pi*4,N)]
+# data = [random.randint(0,10) for i in range(N)]
+#data = range(1,N+1)
+data = [math.sin(i) for i in np.linspace(0,np.pi*4,N)]
 
-
+# data = [float(d) for d in data]
 
 P.plot(range(0,len(data)),data, marker='o', color='r', ls='')
 P.show()
@@ -105,9 +104,9 @@ def allReconstruction(moyenne,coeffs,OpAdd=None,OpSous=None,verbose=False):
 		if verbose :
 			print("{} || {}".format(data,localCoeffs))
 	return data
-m,c = allDecomposition(data,verbose=True)
-print("-----------")
-res = allReconstruction(m,c,verbose=True)
+m,c = allDecomposition(data,verbose=False)
+# print("-----------")
+# res = allReconstruction(m,c,verbose=True)
 
 
 #3.Mettre à 0 les coeff de details d si |d| = epsilon
@@ -123,17 +122,17 @@ def cleanCoeff(coeffs,epsilon,defValue=0,OpInf=None):
 		return [defValue if fabs(c)<epsilon else c for c in coeffs]
 	
 # m, c = allDecomposition(data)
-myeps = 1
+myeps = 0.1
 newC =  cleanCoeff(c,myeps)
 print("epsilon = {}".format(myeps))
-print("coeffs = {}".format(c))
-print("newCoeffs = {}".format(newC))
+# print("coeffs = {}".format(c))
+# print("newCoeffs = {}".format(newC))
 
 
 #4.Reconstruire avec les nouveaux coefficients de details => 
 #on trouve des approximations des données d'origine
 
-newData = allReconstruction(m,newC,verbose=True)
+newData = allReconstruction(m,newC,verbose=False)
 P.plot(range(0,len(newData)),newData, marker='o', color='r', ls='')
 P.show()
 # print("NewData: {}".format(newData))
@@ -174,15 +173,15 @@ def errorGraphique(data,nEpsilon,errorFunction):
 	
 	P.plot(epsilonRange,erreur)
 	P.show()
-errorGraphique(data,20,comparaison2);
+# errorGraphique(data,20,comparaison2);
 
 
 #7 Histogramme des valeurs absolus des coefficients de details
 def coeffHistogramme(coeffs,nGroup):
 	P.hist(coeffs, bins=nGroup)
 	P.show()
-c = [fabs(el) for el in c]
-coeffHistogramme(c,100)
+# c = [fabs(el) for el in c]
+# coeffHistogramme(c,50)
 
 
 ## Récupération des valeurs de l'image
@@ -192,30 +191,23 @@ coeffPixel = lambda data,moy: tuple(map(lambda a,b: a-b,data,moy))
 addPixel = lambda data,coeff:tuple(map(lambda a,b:a+b,data,coeff))
 sousPixel = lambda data,coeff:tuple(map(lambda a,b:a-b,data,coeff))
 opInfPixel = lambda data,epsilon: (fabs(data[0])<epsilon or fabs(data[1])<epsilon or fabs(data[2])<epsilon) 
-# def imageReconstruction(moyennes,coeffs,saveFileName):
-
-	# data = reconstruction(moyennes,coeffs,addPixel,sousPixel)
-	# imNew=Image.new(im.mode ,im.size)  
-	# imNew.putdata(data)
-	# imNew.save(saveFileName)
-
  
-# imageName = "python_256.jpg"
-# saveFileName= "save3.bmp"
-# im = Image.open(imageName)
+imageName = "python_256.jpg"
+saveFileName= "save4.bmp"
+im = Image.open(imageName)
 
-# data = list(im.getdata())
+data = list(im.getdata())
 # print("data: {}".format(data))
-# m,c = allDecomposition(data,OpMoyenne=moyPixel,OpCoeff=coeffPixel)
+m,c = allDecomposition(data,OpMoyenne=moyPixel,OpCoeff=coeffPixel)
 # print("C: {}".format(c))
-# newC = cleanCoeff(c,0,defValue=(0,0,0),OpInf=opInfPixel)
+newC = cleanCoeff(c,2,defValue=(0,0,0),OpInf=opInfPixel)
 # print("M: {}".format(m))
 # print("newC: {}".format(newC))
-# newData = allReconstruction(m,newC,OpAdd=addPixel,OpSous=sousPixel)
+newData = allReconstruction(m,newC,OpAdd=addPixel,OpSous=sousPixel)
 # print("newData: {}".format(newData))
-# imNew=Image.new(im.mode ,im.size)  
-# imNew.putdata(newData)
-# imNew.save(saveFileName)
+imNew=Image.new(im.mode ,im.size)  
+imNew.putdata(newData)
+imNew.save(saveFileName)
 
 
 
