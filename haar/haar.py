@@ -19,11 +19,11 @@ print("N:{}".format(N));
 
 #0 Extraction des données tel qu'image
 random.seed(1)
-# data = [random.randint(0,10) for i in range(N)]
+#data = [random.uniform(0,10) for i in range(N)]
 #data = range(1,N+1)
 data = [math.sin(i) for i in np.linspace(0,np.pi*4,N)]
 
-# data = [float(d) for d in data]
+
 
 P.plot(range(0,len(data)),data, marker='o', color='r', ls='')
 P.show()
@@ -74,36 +74,25 @@ def reconstruction(moyennes,coeffs,OpAdd=None,OpSous=None):
 
 
 #2.Toutes les etapes de décomposition
-def allDecomposition(data,OpMoyenne=None,OpCoeff=None,verbose=False):
-	if verbose :
-		print("Decomposition:")
+def allDecomposition(data,OpMoyenne=None,OpCoeff=None):
 	moyennes = data
 	coeffs = []
-	if verbose : 
-		print("{} || {}".format(moyennes,coeffs))
 	while len(moyennes)>1 :
 		#print(moyennes,coeffs)
 		moyennes,coeffs2 = decomposition(moyennes,OpMoyenne=OpMoyenne,OpCoeff=OpCoeff)
 		coeffs = coeffs2+coeffs;
-		if verbose :
-			print("{} || {}".format(moyennes,coeffs))
 	return moyennes[0],coeffs
 #res =  allDecomposition(data)
 #print(res)
 #2.Toutes les étapes de reconstruction
-def allReconstruction(moyenne,coeffs,OpAdd=None,OpSous=None,verbose=False):
-	if verbose :
-		print "Reconstruction:"
-	localCoeffs = list(coeffs);
+def allReconstruction(moyenne,coeffs,OpAdd=None,OpSous=None):
+	localCoeffs = coeffs;
 	data = [moyenne]
-	if verbose:
-		print("{} || {}".format(data,localCoeffs))
 	while len(localCoeffs)>1:
 		data = reconstruction(data,localCoeffs[:len(data)],OpAdd=OpAdd,OpSous=OpSous)
 		del localCoeffs[:len(data)//2]
-		if verbose :
-			print("{} || {}".format(data,localCoeffs))
 	return data
+
 m,c = allDecomposition(data,verbose=False)
 print("-----------")
 res = allReconstruction(m,c,verbose=True)
@@ -121,18 +110,14 @@ def cleanCoeff(coeffs,epsilon,defValue=0,OpInf=None):
 	else :
 		return [defValue if fabs(c)<epsilon else c for c in coeffs]
 	
-# m, c = allDecomposition(data)
-myeps = 0.1
-newC =  cleanCoeff(c,myeps)
-print("epsilon = {}".format(myeps))
-# print("coeffs = {}".format(c))
-# print("newCoeffs = {}".format(newC))
+m, c = allDecomposition(data)
+newC =  cleanCoeff(c,0.01)
 
 
 #4.Reconstruire avec les nouveaux coefficients de details => 
 #on trouve des approximations des données d'origine
 
-newData = allReconstruction(m,newC,verbose=False)
+newData = allReconstruction(m,newC)
 P.plot(range(0,len(newData)),newData, marker='o', color='r', ls='')
 P.show()
 # print("NewData: {}".format(newData))
@@ -180,8 +165,10 @@ errorGraphique(data,20,comparaison2);
 def coeffHistogramme(coeffs,nGroup):
 	P.hist(coeffs, bins=nGroup)
 	P.show()
+
 c = [fabs(el) for el in c]
 coeffHistogramme(c,50)
+
 
 
 ## Récupération des valeurs de l'image
@@ -191,22 +178,28 @@ coeffPixel = lambda data,moy: tuple(map(lambda a,b: a-b,data,moy))
 addPixel = lambda data,coeff:tuple(map(lambda a,b:a+b,data,coeff))
 sousPixel = lambda data,coeff:tuple(map(lambda a,b:a-b,data,coeff))
 opInfPixel = lambda data,epsilon: (fabs(data[0])<epsilon or fabs(data[1])<epsilon or fabs(data[2])<epsilon) 
+# def imageReconstruction(moyennes,coeffs,saveFileName):
+
+	# data = reconstruction(moyennes,coeffs,addPixel,sousPixel)
+	# imNew=Image.new(im.mode ,im.size)  
+	# imNew.putdata(data)
+	# imNew.save(saveFileName)
+
  
 # imageName = "python_256.jpg"
-# saveFileName= "save4.bmp"
+# saveFileName= "save3.bmp"
 # im = Image.open(imageName)
 
 # data = list(im.getdata())
-# # print("data: {}".format(data))
+# print("data: {}".format(data))
 # m,c = allDecomposition(data,OpMoyenne=moyPixel,OpCoeff=coeffPixel)
-# # print("C: {}".format(c))
-# newC = cleanCoeff(c,2,defValue=(0,0,0),OpInf=opInfPixel)
-# # print("M: {}".format(m))
-# # print("newC: {}".format(newC))
+# print("C: {}".format(c))
+# newC = cleanCoeff(c,0,defValue=(0,0,0),OpInf=opInfPixel)
+# print("M: {}".format(m))
+# print("newC: {}".format(newC))
 # newData = allReconstruction(m,newC,OpAdd=addPixel,OpSous=sousPixel)
-# # print("newData: {}".format(newData))
+# print("newData: {}".format(newData))
 # imNew=Image.new(im.mode ,im.size)  
 # imNew.putdata(newData)
 # imNew.save(saveFileName)
-
 

@@ -1,57 +1,11 @@
 # -*- coding: utf-8 -*-
+
 from __future__ import division
 import random
 from math import *
+from libPoint import Point_C
 
 
-class Point(object):
-	'''
-	rage
-	'''
-	def __init__(self,x,y):
-		self.x=x
-		self.y=y
- 
-	def __neg__(self):
-		return Point(-self.x,-self.y)
- 
-	def __repr__(self):
-		return '('+str(self.x)+';'+str(self.y)+')'
-		
-	def __mul__(self,val):
-		if type(val) is int or type(val) is float :
-			return Point(self.x*val,self.y*val)
-		else:
-			raise NotImplementedError
-			
- 
-	def __add__(self,val):
-		if type(val) is Point :
-			return Point(self.x+val.x,self.y+val.y)
-		else:
-			raise TypeError
-			
- 
-	def __sub__(self,val):
-		if type(val) is Point :
-			return Point(self.x-val.x,self.y-val.y)
-		else:
-			raise TypeError
-			
- 
- 
-	def milieu(self,p):
-		return Point((self.x+p.x)/2,(self.y+p.y)/2)
- 
-	def vecteur(self,p):
-		return Vecteur(p.x-self.x,p.y-self.y)
- 
-	def distance(self,p):
-		return self.vecteur(p).norme()
-		
-
-		
-		
 def processDecomp(point1,point2,point3,point4):
 	""" retourne la moyenne est l'erreur """
 	x = (-point1+point2*3+point3*3-point4)*(1/4)
@@ -86,14 +40,14 @@ def allDecomposition(lPoint):
 
 data = list()
 for i in range(0,2**3):
-	data.append(Point(i,i))
+	data.append(Point_C(i,i))
 
 x,y = allDecomposition(data)
 print("{} ||| {}".format(x,y))
 
 def processRecon(m1,m2,e1,e2):
-	x1 = (m1+e1)*3/4 + x2-e2)*1/4
-	x2 = (m1+e1)*1/4 + x2-e2)*3/4
+	x1 = (m1+e1)*3/4 + (x2-e2)*1/4
+	x2 = (m1+e1)*1/4 + (x2-e2)*3/4
 	return x1,x2
 	
 def reconstruction(m,e):
@@ -102,5 +56,7 @@ def reconstruction(m,e):
 	res = list()
 	while i < nbI:
 		
-		i++
+		i+=1
+
+
 
