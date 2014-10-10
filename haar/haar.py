@@ -166,6 +166,7 @@ def coeffHistogramme(coeffs,nGroup):
 	P.hist(coeffs, bins=nGroup)
 	P.show()
 
+
 c = [fabs(el) for el in c]
 coeffHistogramme(c,50)
 
@@ -199,6 +200,7 @@ opInfPixel = lambda data,epsilon: (fabs(data[0])<epsilon or fabs(data[1])<epsilo
 # print("newC: {}".format(newC))
 # newData = allReconstruction(m,newC,OpAdd=addPixel,OpSous=sousPixel)
 # print("newData: {}".format(newData))
+
 # imNew=Image.new(im.mode ,im.size)  
 # imNew.putdata(newData)
 # imNew.save(saveFileName)
