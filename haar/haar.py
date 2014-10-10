@@ -105,8 +105,8 @@ def allReconstruction(moyenne,coeffs,OpAdd=None,OpSous=None,verbose=False):
 			print("{} || {}".format(data,localCoeffs))
 	return data
 m,c = allDecomposition(data,verbose=False)
-# print("-----------")
-# res = allReconstruction(m,c,verbose=True)
+print("-----------")
+res = allReconstruction(m,c,verbose=True)
 
 
 #3.Mettre à 0 les coeff de details d si |d| = epsilon
@@ -173,15 +173,15 @@ def errorGraphique(data,nEpsilon,errorFunction):
 	
 	P.plot(epsilonRange,erreur)
 	P.show()
-# errorGraphique(data,20,comparaison2);
+errorGraphique(data,20,comparaison2);
 
 
 #7 Histogramme des valeurs absolus des coefficients de details
 def coeffHistogramme(coeffs,nGroup):
 	P.hist(coeffs, bins=nGroup)
 	P.show()
-# c = [fabs(el) for el in c]
-# coeffHistogramme(c,50)
+c = [fabs(el) for el in c]
+coeffHistogramme(c,50)
 
 
 ## Récupération des valeurs de l'image
@@ -192,43 +192,21 @@ addPixel = lambda data,coeff:tuple(map(lambda a,b:a+b,data,coeff))
 sousPixel = lambda data,coeff:tuple(map(lambda a,b:a-b,data,coeff))
 opInfPixel = lambda data,epsilon: (fabs(data[0])<epsilon or fabs(data[1])<epsilon or fabs(data[2])<epsilon) 
  
-imageName = "python_256.jpg"
-saveFileName= "save4.bmp"
-im = Image.open(imageName)
+# imageName = "python_256.jpg"
+# saveFileName= "save4.bmp"
+# im = Image.open(imageName)
 
-data = list(im.getdata())
-# print("data: {}".format(data))
-m,c = allDecomposition(data,OpMoyenne=moyPixel,OpCoeff=coeffPixel)
-# print("C: {}".format(c))
-newC = cleanCoeff(c,2,defValue=(0,0,0),OpInf=opInfPixel)
-# print("M: {}".format(m))
-# print("newC: {}".format(newC))
-newData = allReconstruction(m,newC,OpAdd=addPixel,OpSous=sousPixel)
-# print("newData: {}".format(newData))
-imNew=Image.new(im.mode ,im.size)  
-imNew.putdata(newData)
-imNew.save(saveFileName)
-
-
-
-# im = Image.open("python_16.jpg")  
 # data = list(im.getdata())
-
-# Reconstruction de l'image 
+# # print("data: {}".format(data))
+# m,c = allDecomposition(data,OpMoyenne=moyPixel,OpCoeff=coeffPixel)
+# # print("C: {}".format(c))
+# newC = cleanCoeff(c,2,defValue=(0,0,0),OpInf=opInfPixel)
+# # print("M: {}".format(m))
+# # print("newC: {}".format(newC))
+# newData = allReconstruction(m,newC,OpAdd=addPixel,OpSous=sousPixel)
+# # print("newData: {}".format(newData))
 # imNew=Image.new(im.mode ,im.size)  
-# imNew.putdata(data)
-# imNew.save("save.bmp")
+# imNew.putdata(newData)
+# imNew.save(saveFileName)
 
 
-## Tkinter
-# root = Tk.Tk() 
-# root.geometry("300x300+300+300")
- 
-# image = Image.open("python_64.jpg") 
-# photo = ImageTk.PhotoImage(image) 
- 
-# label = Tk.Label(image=photo)
-# label.image = photo 
-# label.place(x=0,y=0)
- 
-# root.mainloop()
