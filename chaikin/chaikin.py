@@ -78,15 +78,49 @@ def allReconstruction(m,e,verbose=False):
 			print("{} || {}".format(moy,error))
 	return moy
 
+def genDecomposition(lPoint):
+	"""lPoint de longueur puissance 2"""
+	x = lPoint
+	y = list()
+	
+	while len(x)>2 :
+		x,y2 = decomposition(x)
+		y = y2 + y
+		yield x
+
+def genReconstruction(m,e):
+	error = e
+	moy = list(m)
+	
+	while len(error)>1 :
+		oldL = len(moy)
+		moy = reconstruction(moy,error[:len(moy)])
+		del error[:oldL]
+		yield moy
+
 
 data = list()
 for i in range(0,2**3):
 	data.append(Point_C(i,i))
 	
 	
-x,y = allDecomposition(data,verbose=True)
-print("-----------")
-res = allReconstruction(x,y,verbose=True)
+x,y = allDecomposition(data,verbose=False)
+# print("-----------")
+# res = allReconstruction(x,y,verbose=True)
 
+gen = genDecomposition(data)
+
+while True:
+	try:
+		print gen.next()
+	except StopIteration:
+		break
+
+gen = genReconstruction(x,y)
+while True:
+	try:
+		print gen.next()
+	except StopIteration:
+		break
 
 
