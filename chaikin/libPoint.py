@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import division
+
 class Point_C(object):
 	'''
 	rage
@@ -20,7 +22,21 @@ class Point_C(object):
 		else:
 			raise NotImplementedError
 			
- 
+	def __rmul__(self,val):
+		return self.__mul__(val)
+			
+	def __div__(self,val):
+		if type(val) is int or type(val) is float :
+			return Point_C(self.x//val,self.y//val)
+		else:
+			raise NotImplementedError
+	def __truediv__(self,val):
+		if type(val) is int or type(val) is float :
+			return Point_C(self.x/val,self.y/val)
+		else:
+			raise NotImplementedError
+
+			
 	def __add__(self,val):
 		if type(val) is Point_C :
 			return Point_C(self.x+val.x,self.y+val.y)
@@ -34,7 +50,7 @@ class Point_C(object):
 		else:
 			raise TypeError
 
-
+	
 	def milieu(self,p):
 		return Point((self.x+p.x)/2,(self.y+p.y)/2)
  
