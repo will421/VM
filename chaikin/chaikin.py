@@ -110,6 +110,7 @@ x,y = allDecomposition(data,verbose=False)
 
 gen = genDecomposition(data)
 
+
 while True:
 	try:
 		print gen.next()
