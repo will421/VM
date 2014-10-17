@@ -55,7 +55,7 @@ def allDecomposition(lPoint,verbose=False):
 	
 	if verbose:
 		print("{} || {}".format(x,y))
-	while len(x)>2 :
+	while len(x)>4 :
 		x,y2 = decomposition(x)
 		y = y2 + y
 		if verbose:
@@ -83,10 +83,10 @@ def genDecomposition(lPoint):
 	x = lPoint
 	y = list()
 	
-	while len(x)>2 :
+	while len(x)>4 :
 		x,y2 = decomposition(x)
 		y = y2 + y
-		yield x
+		yield x,y
 
 def genReconstruction(m,e):
 	error = e
@@ -99,29 +99,29 @@ def genReconstruction(m,e):
 		yield moy
 
 
-data = list()
-for i in range(0,2**3):
-	data.append(Point_C(i,i))
+# data = list()
+# for i in range(0,2**3):
+# 	data.append(Point_C(i,i))
 	
 	
-x,y = allDecomposition(data,verbose=False)
+# x,y = allDecomposition(data,verbose=False)
 # print("-----------")
 # res = allReconstruction(x,y,verbose=True)
 
-gen = genDecomposition(data)
+# gen = genDecomposition(data)
 
 
-while True:
-	try:
-		print gen.next()
-	except StopIteration:
-		break
+# while True:
+# 	try:
+# 		print gen.next()
+# 	except StopIteration:
+# 		break
 
-gen = genReconstruction(x,y)
-while True:
-	try:
-		print gen.next()
-	except StopIteration:
-		break
+# gen = genReconstruction(x,y)
+# while True:
+# 	try:
+# 		print gen.next()
+# 	except StopIteration:
+# 		break
 
 
