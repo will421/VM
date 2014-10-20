@@ -107,18 +107,18 @@ if __name__ == '__main__':
 	print("-----------")
 	res = allReconstruction(x,y,verbose=True)
 	
-	gen = genDecomposition(data)
-	while True:
-		try:
-			print gen.next()
-		except StopIteration:
-			break
+	# gen = genDecomposition(data)
+	# while True:
+		# try:
+			# print gen.next()
+		# except StopIteration:
+			# break
 
-	gen = genReconstruction(x,y)
-	while True:
-		try:
-			print gen.next()
-		except StopIteration:
-			break
+	# gen = genReconstruction(x,y)
+	# while True:
+		# try:
+			# print gen.next()
+		# except StopIteration:
+			# break
 
 

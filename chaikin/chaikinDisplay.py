@@ -5,6 +5,7 @@ from libPoint import Point_C
 import chaikin as ch
 import random
 import math as m
+import os
 
 
 def randomColor():
@@ -17,7 +18,7 @@ def draw(win,data,color='black',width=1):
 	oldPt = None
 	for elt in data:
 		pt = Point(elt.x,elt.y)
-		pt.draw(win)
+		#pt.draw(win)
 
 		if not oldPt is None :
 			line = Line(oldPt,pt)
@@ -133,8 +134,10 @@ def main(argv):
 		except StopIteration:
 			break
 
-	win.getMouse()
+	#win.getMouse()
+	key = win.getKey()
+
 	win.close()
 
 if __name__ == '__main__':
-	main(main(sys.argv[1:]))
+	main(sys.argv[1:])
