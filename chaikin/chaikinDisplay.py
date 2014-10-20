@@ -30,17 +30,37 @@ def draw(win,data,color='black',width=1):
 	line.setOutline(color)
 	line.draw(win)
 
-def  main():
+def main(argv):
 	
+	file = "crocodile512.d.txt"
+	if len(argv)>=1:
+		file = argv[0]
+
 	dataOriginal = list()
 	
 	# stockage des points 
-	fichier = open ("crocodile512.d.txt",'r')
+	fichier = open (file,'r')
 
 
 	for line in fichier:
 		pt = line.split(" ") 
-		p = Point_C(float(pt[0]),float(pt[1]))
+		i=0
+		while(True):
+			try:
+				float(pt[i])
+				break
+			except ValueError:
+				i+=1
+
+		i2=i+1
+		while(True):
+			try:
+				float(pt[i2])
+				break
+			except ValueError:
+				i2+=1
+
+		p = Point_C(float(pt[i]),float(pt[i2]))
 		dataOriginal.append(p)
 
 	fichier.close
@@ -99,7 +119,7 @@ def  main():
 	win = GraphWin('ChaikinReconstruction',500,500)
 	win.setCoords(minX,minY,maxX,maxY)
 
-	epsilon = 0.25
+	epsilon = 0.30
 	newError = [Point_C(0,0) if m.sqrt(error.x**2+error.y**2)<epsilon else error for error in eFinal]
 
 	draw(win,dataFinal)
@@ -116,5 +136,5 @@ def  main():
 	win.getMouse()
 	win.close()
 
-	
-main()
+if __name__ == '__main__':
+	main(main(sys.argv[1:]))

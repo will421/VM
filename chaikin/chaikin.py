@@ -98,30 +98,27 @@ def genReconstruction(m,e):
 		del error[:oldL]
 		yield moy
 
+if __name__ == '__main__':
+	data = list()
+	for i in range(0,2**3):
+		data.append(Point_C(i,i))
 
-# data = list()
-# for i in range(0,2**3):
-# 	data.append(Point_C(i,i))
+	x,y = allDecomposition(data,verbose=True)
+	print("-----------")
+	res = allReconstruction(x,y,verbose=True)
 	
-	
-# x,y = allDecomposition(data,verbose=False)
-# print("-----------")
-# res = allReconstruction(x,y,verbose=True)
+	gen = genDecomposition(data)
+	while True:
+		try:
+			print gen.next()
+		except StopIteration:
+			break
 
-# gen = genDecomposition(data)
-
-
-# while True:
-# 	try:
-# 		print gen.next()
-# 	except StopIteration:
-# 		break
-
-# gen = genReconstruction(x,y)
-# while True:
-# 	try:
-# 		print gen.next()
-# 	except StopIteration:
-# 		break
+	gen = genReconstruction(x,y)
+	while True:
+		try:
+			print gen.next()
+		except StopIteration:
+			break
 
 
