@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import division
-
+import math as m
 class Point_C(object):
 	'''
 	rage
@@ -49,6 +49,9 @@ class Point_C(object):
 			return Point_C(self.x-val.x,self.y-val.y)
 		else:
 			raise TypeError
+
+	def norme(self):
+		return m.sqrt(self.x**2+self.y**2)
 
 	
 	def milieu(self,p):

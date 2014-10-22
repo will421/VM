@@ -121,7 +121,7 @@ def main(argv):
 	win.setCoords(minX,minY,maxX,maxY)
 
 	epsilon = 0.30
-	newError = [Point_C(0,0) if m.sqrt(error.x**2+error.y**2)<epsilon else error for error in eFinal]
+	newError = [Point_C(0,0) if error.norme()<epsilon else error for error in eFinal]
 
 	draw(win,dataFinal)
 	gen = ch.genReconstruction(dataFinal,newError)
@@ -133,6 +133,17 @@ def main(argv):
 			draw(win,data,color=color)
 		except StopIteration:
 			break
+
+
+	#formule de comparaison : Racine des sommes de la differene au carré des normes
+
+
+
+
+
+
+
+
 
 	#win.getMouse()
 	key = win.getKey()
