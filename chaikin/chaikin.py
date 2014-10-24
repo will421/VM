@@ -4,6 +4,8 @@ from __future__ import division
 import random
 from math import *
 from libPoint import Point_C
+import pylab as P
+import numpy as np
 
 def processDecomp(point1,point2,point3,point4):
 	""" retourne la moyenne est l'erreur """
@@ -122,3 +124,49 @@ if __name__ == '__main__':
 			# break
 
 
+def errorGraphique(data,nEpsilon,errorFunction):
+	# P.ion()
+	epsilon_tab = np.linspace(0,getMaxNorme(data),nEpsilon)
+	erreur_calc = []
+
+	data_approx,coeffs = allDecomposition(data)
+
+	for e in epsilon_tab:
+		new_coeff = [Point_C(0,0) if coeff.norme()<e else coeff for coeff in coeffs]
+
+		rebuilt = allReconstruction(data_approx,new_coeff)
+		erreur_calc.append(getError(data,rebuilt))
+	P.figure()
+	P.plot(epsilon_tab,erreur_calc)
+	P.ylabel("erreur")
+	P.xlabel("epsilon")
+	P.show()
+
+
+def getError(data,data_approx):
+	
+	res = 0
+	for i,elm in enumerate(data):
+		diff = elm - data_approx[i]
+		res += diff.norme()
+	
+	res = sqrt(res)
+	return res
+
+def getMaxNorme(data):
+	normes = []
+	for elm in data:
+		normes.append(elm.norme())
+	return max(normes)
+
+def getHist(coeffs,nb_barre):
+	# P.ion()
+	normes =[]
+
+	for elm in coeffs:
+		normes.append(elm.norme())
+	P.figure()
+	P.hist(normes,nb_barre)
+	P.ylabel("population")
+	P.xlabel("norme de coefficient")
+	P.show()

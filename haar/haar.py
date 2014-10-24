@@ -168,7 +168,7 @@ def coeffHistogramme(coeffs,nGroup):
 
 
 c = [fabs(el) for el in c]
-coeffHistogramme(c,50)
+coeffHistogramme(c,500)
 
 
 

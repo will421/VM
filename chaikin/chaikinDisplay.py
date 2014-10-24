@@ -2,7 +2,9 @@
 
 from graphics import *
 from libPoint import Point_C
+from multiprocessing import Process
 import chaikin as ch
+
 import random
 import math as m
 import os
@@ -32,7 +34,9 @@ def draw(win,data,color='black',width=1):
 	line.draw(win)
 
 def main(argv):
-	
+
+
+
 	file = "crocodile512.d.txt"
 	if len(argv)>=1:
 		file = argv[0]
@@ -77,78 +81,91 @@ def main(argv):
 	maxY = max(y)
 
 
-	win = GraphWin('ChaikinDecomposition',500,500)
+	win1 = GraphWin('ChaikinDecomposition',500,500)
 
-	win.setCoords(minX,minY,maxX,maxY)
+	win1.setCoords(minX,minY,maxX,maxY)
 
 
 	#Herisson initial
-	draw(win,dataOriginal)
+	draw(win1,dataOriginal)
 
 	gen = ch.genDecomposition(dataOriginal)
-	
 	
 
 	while True:
 		try:
 			data,e = gen.next()
 			color = randomColor()
-			draw(win,data,color=color)
+			draw(win1,data,color=color)
 		except StopIteration:
 			break
 
-	# win.getMouse()
+	win1.getKey()
+
 	
-	win = GraphWin('ChaikinReconstruction',500,500)
-	win.setCoords(minX,minY,maxX,maxY)
+	win2 = GraphWin('ChaikinReconstruction',500,500)
+	win2.setCoords(minX,minY,maxX,maxY)
 
 	dataFinal = list(data)
 	eFinal = list(e)
 
-	draw(win,data)
-
+	draw(win2,data)
 	gen = ch.genReconstruction(data,e)
 
 	while True:
 		try:
 			data = gen.next()
 			color = randomColor()
-			draw(win,data,color=color)
+			draw(win2,data,color=color)
 		except StopIteration:
 			break
+	win2.getKey()
 
-	win = GraphWin('ChaikinReconstruction',500,500)
-	win.setCoords(minX,minY,maxX,maxY)
 
 	epsilon = 0.30
+	win3 = GraphWin('ChaikinReconstruction'+" epsilon="+str(epsilon),500,500)
+	win3.setCoords(minX,minY,maxX,maxY)
+
+	
 	newError = [Point_C(0,0) if error.norme()<epsilon else error for error in eFinal]
 
-	draw(win,dataFinal)
+	draw(win3,dataFinal)
+
+
+
+
 	gen = ch.genReconstruction(dataFinal,newError)
 
 	while True:
 		try:
 			data = gen.next()
 			color = randomColor()
-			draw(win,data,color=color)
+			draw(win3,data,color=color)
 		except StopIteration:
 			break
-
+	win3.getKey()
 
 	#formule de comparaison : Racine des sommes de la differene au carré des normes
 
+	proc1 = Process(target=ch.errorGraphique,args=(dataOriginal,20,ch.getError))
+	proc1.start()
+	# ch.errorGraphique(dataOriginal,20,ch.getError)
+	
+
+	data_approx,coeffs = ch.allDecomposition(dataOriginal)
+	proc2 = Process(target=ch.getHist,args=(coeffs,50))
+	proc2.start()
 
 
-
-
-
-
-
+	os.system('pause')
+	win1.close()
+	win2.close()
+	win3.close()
+	proc1.terminate()
+	proc2.terminate()
 
 	#win.getMouse()
-	key = win.getKey()
 
-	win.close()
 
 if __name__ == '__main__':
 	main(sys.argv[1:])
