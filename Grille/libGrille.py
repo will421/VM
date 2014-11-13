@@ -14,10 +14,10 @@ class Grille:
 		self.points= points
 		self.width = w #nombre de colonne mais aussi nombre de point d'une ligne
 		self.height = h #nombre de ligne mais aussi le nombre de point d'une colonne
-		print points
+		# print points
 	def convertTo1D(self,i,j):
 		res = i+self.width*j
-		print "self:{},{},{}  convertTo1D({},{}) = {}".format(self.width,self.height,len(self.points),i,j,res)
+		# print "self:{},{},{}  convertTo1D({},{}) = {}".format(self.width,self.height,len(self.points),i,j,res)
 		return res
 
 	def __getitem__(self,i,j):
@@ -62,9 +62,9 @@ class Grille:
 		self.height = len(col) #On met à jour le nombre ligne
 
 		newData2 = list() #Besoin d'une inversion pour être dans notre structure de donnée
-		print newData
+		# print newData
 		for j in range(0,self.height):
-			for i in range(0,self.height):
+			for i in range(0,self.width):
 				newData2.append(newData[(i*self.height)+j])
 		self.points = newData2
 
