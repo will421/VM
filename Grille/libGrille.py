@@ -69,8 +69,8 @@ class Grille:
 		self.points = newData2
 
 	def subdivision(self):
-		self.subdivisionLine()
 		self.subdivisionColumn()
+		self.subdivisionLine()
 
 if __name__ == "__main__":
 	listPoints = [Point3D_C(i,i,i) for i in range(0,10) ]

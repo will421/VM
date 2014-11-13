@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import sys
 from libPoint import Point3D_C
+from libGrille import *
 
 def main(argv):
 	
@@ -15,8 +16,11 @@ def main(argv):
 	pointsLoaded = loadMaillage(fichier)
 	fichier.close
 	
-	generateObj(pointsLoaded,fileNameObj)
+	Matrice = Grille(nb_ligne,nb_col,pointsLoaded)
 
+	Matrice.subdivision()
+	generateObjFromMatrix(Matrice,fileNameObj)
+	
 	
 	
 
@@ -69,30 +73,20 @@ def loadMaillage(fichier):
 
 	return data_points
 
-def generateObj(data,filenameObj):
-
-	fichier = open(filenameObj, "w")
-
-	#ecire des V
-	for elt in data:
-		fichier.write("v " + elt.toVertex() + "\n")
-	fichier.close()
-	#ToDO : Write Faces
-
 
 def generateObjFromMatrix(Matrix,filenameObj):
 	fichier = open(filenameObj, "w")
 	
-	for elt in data:
+	for elt in Matrix.points:
 		fichier.write("v " + elt.toVertex() + "\n")
-	fichier.close()	
 
-	for x in range(0, nb_col-1):
-    	for y in range(0,nb_ligne-1)
-    	fichier.write("f "+ getID(x,y) + getID(x+1,y)  + getID(x+1,y+1)   + getID(x,y+1))  
+	for x in range(0, Matrix.width-1):
+		for y in range(0,Matrix.height-1):
+			fichier.write("f {} {} {} {} \n".format(Matrix.convertTo1D(x,y)+1,Matrix.convertTo1D(x+1,y)+1,
+				Matrix.convertTo1D(x+1,y+1)+1,Matrix.convertTo1D(x,y+1)+1))
+
+	fichier.close()
+ 
 
 if __name__ == "__main__":
-   main(sys.argv[1:])
-
-
-
+	main(sys.argv[1:])
