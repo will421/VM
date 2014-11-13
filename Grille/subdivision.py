@@ -3,9 +3,6 @@
 from __future__ import division
 
 
-
-
-
 def processSubdivision(p1,p2):
 	res1 = 3/4*p1 + 1/4*p2
 	res2 = 1/4*p1 + 3/4*p2
