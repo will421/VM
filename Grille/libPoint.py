@@ -57,6 +57,8 @@ class Point3D_C(object):
 	def milieu(self,p):
 		return Point3D_C((self.x+p.x)/2,(self.y+p.y)/2,(self.z+p.z)/2)
  
+ 	def toVertex(self):
+ 		return str(self.x) + " " + str(self.y) + " " + str(self.z)
 	# def vecteur(self,p):
 		# return Vecteur(p.x-self.x,p.y-self.y)
  
