@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import sys
+import random
 from libPoint import Point3D_C
 from libGrille import *
 
@@ -38,7 +39,7 @@ def genMaillage(filename,nb_col,nb_ligne):
 		
 		for j in range(0,nb_ligne) :
 			 
-			fichier.write(str(j+0.0)+','+str(i+0.0)+','+str(0+0.0) + ",\n")
+			fichier.write(str(j+0.0+ random.uniform(-0.5, 0.5))+','+str(i+0.0+ random.uniform(-0.5, 0.5))+','+str(0.0+ random.uniform(-0.5, 0.5)) + ",\n")
 			
 			#if j == nb_col-1:
 				#fichier.write("\n")
