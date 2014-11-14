@@ -9,10 +9,14 @@ def processSubdivision(p1,p2):
 	
 	return res1,res2
 
-def subdivisionChaikinOneStep(lPoint):
+def subdivisionChaikinOneStep(lPoint,connect=False):
 	res = []
 	for i in range(0,len(lPoint)-1):
 		a,b = processSubdivision(lPoint[i],lPoint[i+1])
+		res.append(a)
+		res.append(b)
+	if connect:
+		a,b = processSubdivision(lPoint[len(lPoint)-1],lPoint[0])
 		res.append(a)
 		res.append(b)
 	return res

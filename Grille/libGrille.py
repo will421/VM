@@ -44,20 +44,20 @@ class Grille:
 		return res
 
 
-	def subdivisionLine(self):
+	def subdivisionLine(self,connectLines=False):
 		newData = list()
 		for j in range(0,self.height): #parcours des lignes et subdivision
 			line = list(self.getLinePoints(j))
-			newLine = sub.subdivisionChaikinOneStep(line)
+			newLine = sub.subdivisionChaikinOneStep(line,connectLines)
 			newData = newData + newLine
 		self.width = len(newLine) #On met à jour le nombre de colonne
 		self.points = newData
 
-	def subdivisionColumn(self):
+	def subdivisionColumn(self,connectColumns=False):
 		newData = list()
 		for i in range(0,self.width): #parcours des colonnes et subdivision
 			col = list(self.getColumnPoints(i))
-			col = sub.subdivisionChaikinOneStep(col)
+			col = sub.subdivisionChaikinOneStep(col,connectColumns)
 			newData = newData + col
 		self.height = len(col) #On met à jour le nombre ligne
 
@@ -68,9 +68,9 @@ class Grille:
 				newData2.append(newData[(i*self.height)+j])
 		self.points = newData2
 
-	def subdivision(self):
-		self.subdivisionLine()
-		self.subdivisionColumn()
+	def subdivision(self,connectI=False,connectJ=False):
+		self.subdivisionLine(connectI)
+		self.subdivisionColumn(connectJ)
 
 if __name__ == "__main__":
 	listPoints = [Point3D_C(i,i,i) for i in range(0,10) ]
