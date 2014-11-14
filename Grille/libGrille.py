@@ -6,7 +6,7 @@ import subdivision as sub
 
 class Grille:
 
-	
+
 	def __init__(self,w,h,points):
 		'''
 		w*h == len(points) avec w>0 et h>0

@@ -1,6 +1,7 @@
 *.class
 *.onetoc2
 *.pyc
+*.obj
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
@@ -59,3 +60,4 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
+Grille/maillage.txt

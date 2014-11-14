@@ -6,6 +6,8 @@ from libGrille import *
 
 def main(argv):
 	
+	random.seed(15)
+
 	nb_ligne = int (argv [0])
 	nb_col = int (argv[1])
 	fileNameMaillage = "maillage.txt"
@@ -19,11 +21,15 @@ def main(argv):
 	
 	Matrice = Grille(nb_ligne,nb_col,pointsLoaded)
 
+
+	generateObjFromMatrix(Matrice,"original.obj")
 	Matrice.subdivision()
-	generateObjFromMatrix(Matrice,fileNameObj)
-	
-	
-	
+	generateObjFromMatrix(Matrice,"sub1.obj")
+	Matrice.subdivision()
+	generateObjFromMatrix(Matrice,"sub2.obj")
+	Matrice.subdivision()
+	Matrice.subdivision()
+	generateObjFromMatrix(Matrice,"sub4.obj")
 
 #generatemaillage and return point
 def genMaillage(filename,nb_col,nb_ligne):
