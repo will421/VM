@@ -5,31 +5,37 @@ from libPoint import Point3D_C
 from libGrille import *
 
 def main(argv):
-	
 	random.seed(15)
 
-	nb_ligne = int (argv [0])
-	nb_col = int (argv[1])
-	fileNameMaillage = "maillage.txt"
+	# nb_ligne = int (argv [0])
+	# nb_col = int (argv[1])
+	nb_sub = int(argv[2])
+	#fileNameMaillage = "maillage.txt"
+	fileNameMaillageAggrafe = "aggrafe.txt"
+
+
 	fileNameObj = "grille.obj"
 
-	genMaillage(fileNameMaillage,nb_col,nb_ligne)
+	#genMaillage(fileNameMaillage,nb_col,nb_ligne)	
+	# fichier = open(fileNameMaillage, "r")
+	# pointsLoaded = loadMaillage(fichier)
+	# fichier.close
 	
-	fichier = open(fileNameMaillage, "r")
+	# Matrice = Grille(nb_ligne,nb_col,pointsLoaded)
+
+	# generateObjFromMatrix(Matrice,fileNameObj)
+	fichier = open(fileNameMaillageAggrafe,"r")
 	pointsLoaded = loadMaillage(fichier)
 	fichier.close
+
+	MatriceAgg = Grille(4,4,pointsLoaded)
+	for i in range(0,nb_sub-1):
+		MatriceAgg.subdivision(True,True,False)
+	if(nb_sub>=1):
+		MatriceAgg.subdivision(True,True,True)
+
+	generateObjFromMatrix(MatriceAgg,"aggrafe.obj")
 	
-	Matrice = Grille(nb_ligne,nb_col,pointsLoaded)
-
-
-	generateObjFromMatrix(Matrice,"original.obj")
-	Matrice.subdivision()
-	generateObjFromMatrix(Matrice,"sub1.obj")
-	Matrice.subdivision()
-	generateObjFromMatrix(Matrice,"sub2.obj")
-	Matrice.subdivision()
-	Matrice.subdivision()
-	generateObjFromMatrix(Matrice,"sub4.obj")
 
 #generatemaillage and return point
 def genMaillage(filename,nb_col,nb_ligne):
@@ -40,7 +46,6 @@ def genMaillage(filename,nb_col,nb_ligne):
 	fichier.write(str(nb_ligne)+ " " + str(nb_col)+"\n") # print du nombre ligne et colone
 	
 
-	
 	for i in range(0,nb_col) :
 		
 		for j in range(0,nb_ligne) :
@@ -93,7 +98,6 @@ def generateObjFromMatrix(Matrix,filenameObj):
 				Matrix.convertTo1D(x+1,y+1)+1,Matrix.convertTo1D(x,y+1)+1))
 
 	fichier.close()
- 
 
 if __name__ == "__main__":
 	main(sys.argv[1:])
